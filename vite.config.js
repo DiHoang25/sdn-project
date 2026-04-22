@@ -6,5 +6,24 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    proxy: {
+      "/api": {
+        target: "https://robena-nonapparitional-knox.ngrok-free.dev",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      "/auth": {
+        target: "https://robena-nonapparitional-knox.ngrok-free.dev",
+        changeOrigin: true,
+      },
+      "/quizzes": {
+        target: "https://robena-nonapparitional-knox.ngrok-free.dev",
+        changeOrigin: true,
+      },
+      "/questions": {
+        target: "https://robena-nonapparitional-knox.ngrok-free.dev",
+        changeOrigin: true,
+      },
+    },
   },
 });

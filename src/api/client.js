@@ -1,8 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL =
- 
-  "https://robena-nonapparitional-knox.ngrok-free.dev";
+export const API_BASE_URL = "http://localhost:5173";
 
 export const STORAGE_KEY = "quiz-master-auth";
 
@@ -23,6 +21,10 @@ export function registerAuthFailureHandler(handler) {
 }
 
 apiClient.interceptors.request.use((config) => {
+  // Add ngrok skip browser warning header
+  config.headers["ngrok-skip-browser-warning"] = "true";
+  config.headers["User-Agent"] = "QuizMaster-App/1.0";
+
   if (currentAuthToken) {
     let latestStoredToken = null;
 

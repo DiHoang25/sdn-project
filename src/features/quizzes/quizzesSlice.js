@@ -6,7 +6,21 @@ export const fetchQuizzes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await apiClient.get("/quizzes");
-      return response.data;
+      // Handle different response formats
+      let data = response.data;
+      
+      // If response is wrapped in data object
+      if (data && data.data && Array.isArray(data.data)) {
+        data = data.data;
+      }
+      // If response is object but not array
+      else if (data && !Array.isArray(data)) {
+        // Try to find array property
+        const arrayProp = Object.values(data).find(v => Array.isArray(v));
+        data = arrayProp || [];
+      }
+      
+      return Array.isArray(data) ? data : [];
     } catch (error) {
       return rejectWithValue(getApiErrorMessage(error, "Unable to fetch quizzes"));
     }
